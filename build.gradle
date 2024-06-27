@@ -1,39 +1,53 @@
-plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.1'
-	id 'io.spring.dependency-management' version '1.1.5'
-}
-
 group = 'com.spring.java.batch'
 version = '0.0.1-SNAPSHOT'
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+buildscript {
+	ext {
+		springBootVersion = '3.3.1'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+		classpath "com.diffplug.spotless:spotless-plugin-gradle:7.0.0.BETA1"
 	}
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: "com.diffplug.spotless"
+
+	sourceCompatibility = '17'
+	targetCompatibility = '17'
+
+	repositories {
+		mavenCentral()
 	}
-}
 
-repositories {
-	mavenCentral()
-}
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-batch'
+		implementation 'org.springframework.batch:spring-batch-core'
+		implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.25.0'
+		implementation 'org.seasar.doma.boot:doma-spring-boot-starter:1.8.0'
+		compileOnly 'org.projectlombok:lombok'
+		developmentOnly 'org.springframework.boot:spring-boot-devtools'
+		runtimeOnly 'org.postgresql:postgresql'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.springframework.batch:spring-batch-test'
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	}
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-batch'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.batch:spring-batch-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
+	spotless {
+		java {
+			googleJavaFormat()
+		}
+	}
 
-tasks.named('test') {
-	useJUnitPlatform()
+	test {
+		useJUnitPlatform()
+	}
 }
