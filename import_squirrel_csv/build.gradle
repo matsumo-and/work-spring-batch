@@ -1,2 +1,12 @@
-dependencies {
+plugins {
+    id 'org.springframework.boot' apply false
+    id 'java'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }

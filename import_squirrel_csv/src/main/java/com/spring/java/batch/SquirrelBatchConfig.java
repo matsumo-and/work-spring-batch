@@ -35,7 +35,8 @@ public class SquirrelBatchConfig {
   @Bean
   public Step squirrelStep(
       JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-    return new StepBuilder("squirrelStep", jobRepository).chunk(100)
+    return new StepBuilder("squirrelStep", jobRepository)
+        .<String, SquirrelEntity>chunk(100, transactionManager)
         .reader(squirrelReader)
         .processor(squirrelProcessor)
         .writer(squirrelWriter)

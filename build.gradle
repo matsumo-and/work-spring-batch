@@ -1,31 +1,28 @@
+plugins {
+	id 'org.springframework.boot' version '3.3.1'
+	id 'io.spring.dependency-management' version '1.1.5'
+	id "com.diffplug.spotless" version "7.0.0.BETA1"
+	id 'java'
+}
+
 group = 'com.spring.java.batch'
 version = '0.0.1-SNAPSHOT'
 
-buildscript {
-	ext {
-		springBootVersion = '3.3.1'
-	}
+allprojects {
 	repositories {
 		mavenCentral()
 	}
-	dependencies {
-		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-		classpath "com.diffplug.spotless:spotless-plugin-gradle:7.0.0.BETA1"
-	}
+
+	sourceCompatibility = '17'
+	targetCompatibility = '17'
 }
+
 
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'io.spring.dependency-management'
 	apply plugin: "com.diffplug.spotless"
-
-	sourceCompatibility = '17'
-	targetCompatibility = '17'
-
-	repositories {
-		mavenCentral()
-	}
 
 	dependencies {
 		implementation 'org.springframework.boot:spring-boot-starter-batch'
@@ -36,9 +33,17 @@ subprojects {
 		developmentOnly 'org.springframework.boot:spring-boot-devtools'
 		runtimeOnly 'org.postgresql:postgresql'
 		annotationProcessor 'org.projectlombok:lombok'
+		implementation 'org.seasar.doma:doma-core:2.60.0'
+		annotationProcessor 'org.seasar.doma:doma-processor:2.60.0'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'org.springframework.batch:spring-batch-test'
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
 	}
 
 	spotless {
