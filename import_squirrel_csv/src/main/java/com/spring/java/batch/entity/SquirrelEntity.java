@@ -1,4 +1,4 @@
-package com.spring.java.batch;
+package com.spring.java.batch.entity;
 
 import java.util.OptionalLong;
 import org.seasar.doma.Entity;

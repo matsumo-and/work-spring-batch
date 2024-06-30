@@ -1,6 +1,9 @@
-package com.spring.java.batch;
+package com.spring.java.batch.writer;
 
 import java.util.List;
+
+import com.spring.java.batch.dao.SquirrelDao;
+import com.spring.java.batch.entity.SquirrelEntity;
 import org.springframework.batch.item.*;
 import org.springframework.stereotype.Component;
 
