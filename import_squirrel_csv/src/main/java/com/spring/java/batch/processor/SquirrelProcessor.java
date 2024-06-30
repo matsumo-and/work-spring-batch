@@ -1,9 +1,8 @@
 package com.spring.java.batch.processor;
 
-import java.util.OptionalLong;
-
 import com.spring.java.batch.entity.SquirrelCsvEntity;
 import com.spring.java.batch.entity.SquirrelEntity;
+import java.util.OptionalLong;
 import org.springframework.batch.item.*;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
