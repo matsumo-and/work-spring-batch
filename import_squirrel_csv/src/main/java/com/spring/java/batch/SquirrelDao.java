@@ -20,6 +20,12 @@ public interface SquirrelDao {
             """)
   Stream<SquirrelEntity> findAll();
 
+  @Sql(
+      """
+          truncate table squirrel
+          """)
+  void truncate();
+
   @BatchInsert
   BatchResult<SquirrelEntity> insert(List<SquirrelEntity> squirrelEntityList);
 }

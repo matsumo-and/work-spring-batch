@@ -23,19 +23,33 @@ public class SquirrelBatchConfig {
   private final SquirrelProcessor squirrelProcessor;
   private final SquirrelWriter squirrelWriter;
   private final LoggingListener loggingListener;
+  private final SquirrelTruncateTasklet squirrelTruncateTasklet;
 
   public SquirrelBatchConfig(
       SquirrelProcessor squirrelProcessor,
       SquirrelWriter squirrelWriter,
-      LoggingListener loggingListener) {
+      LoggingListener loggingListener,
+      SquirrelTruncateTasklet squirrelTruncateTasklet) {
     this.squirrelProcessor = squirrelProcessor;
     this.squirrelWriter = squirrelWriter;
     this.loggingListener = loggingListener;
+    this.squirrelTruncateTasklet = squirrelTruncateTasklet;
   }
 
   @Bean
-  public Job squirrelJob(JobRepository jobRepository, Step squirrelStep) {
-    return new JobBuilder("squirrelJob", jobRepository).start(squirrelStep).build();
+  public Job squirrelJob(JobRepository jobRepository, Step truncateStep, Step squirrelStep) {
+    return new JobBuilder("squirrelJob", jobRepository)
+        .start(truncateStep)
+        .next(squirrelStep)
+        .build();
+  }
+
+  @Bean
+  public Step truncateStep(
+      JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    return new StepBuilder("squirrelStep", jobRepository)
+        .tasklet(squirrelTruncateTasklet, transactionManager)
+        .build();
   }
 
   @Bean
