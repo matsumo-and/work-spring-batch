@@ -28,6 +28,7 @@ subprojects {
 		implementation 'org.springframework.batch:spring-batch-core'
 		implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.25.0'
 		implementation 'org.seasar.doma.boot:doma-spring-boot-starter:1.8.0'
+		implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 		compileOnly 'org.projectlombok:lombok'
 		developmentOnly 'org.springframework.boot:spring-boot-devtools'
 		runtimeOnly 'org.postgresql:postgresql'

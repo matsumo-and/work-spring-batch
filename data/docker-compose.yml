@@ -16,7 +16,7 @@ services:
 
   es:
     build: ./elasticsearch
-    container_name: elasticsearch-v8010
+    container_name: elasticsearch
     environment:
       - node.name=elasticsearch
       - discovery.type=single-node
@@ -37,7 +37,7 @@ services:
     ports:
       - 5601:5601
     environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch-v8010:9200
+      ELASTICSEARCH_HOSTS: http://localhost:9200
 
 volumes:
   es-data:
