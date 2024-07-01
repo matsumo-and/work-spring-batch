@@ -8,7 +8,6 @@ import com.spring.java.batch.tasklet.SquirrelTruncateTasklet;
 import com.spring.java.batch.writer.SquirrelWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -20,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
-@EnableBatchProcessing
 @Configuration
 public class SquirrelBatchConfig {
 
@@ -55,6 +53,7 @@ public class SquirrelBatchConfig {
       JobRepository jobRepository, PlatformTransactionManager transactionManager) {
     return new StepBuilder("squirrelStep", jobRepository)
         .tasklet(squirrelTruncateTasklet, transactionManager)
+        .allowStartIfComplete(true)
         .build();
   }
 
@@ -67,6 +66,7 @@ public class SquirrelBatchConfig {
         .processor(squirrelProcessor)
         .writer(squirrelWriter)
         .listener(loggingListener)
+        .allowStartIfComplete(true)
         .build();
   }
 

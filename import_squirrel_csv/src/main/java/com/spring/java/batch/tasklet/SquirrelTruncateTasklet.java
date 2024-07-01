@@ -20,6 +20,6 @@ public class SquirrelTruncateTasklet implements Tasklet {
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
       throws Exception {
     squirrelDao.truncate();
-    return RepeatStatus.CONTINUABLE;
+    return RepeatStatus.FINISHED;
   }
 }
