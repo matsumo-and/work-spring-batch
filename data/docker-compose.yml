@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  postgresql:
+    image: postgres:16.3
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_DB: "local"
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbvol:/var/lib/postgresql/data
+      - ./postgres_init:/docker-entrypoint-initdb.d
+
+  es:
+    build: ./elasticsearch
+    container_name: elasticsearch-v8010
+    environment:
+      - node.name=elasticsearch
+      - discovery.type=single-node
+      - cluster.name=es-docker-cluster
+      - xpack.security.enabled=false
+      - http.port=9200
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.14.1
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch-v8010:9200
+
+volumes:
+  es-data:
+  dbvol:
